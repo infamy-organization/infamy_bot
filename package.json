@@ -1,0 +1,16 @@
+{
+    "name": "infamy_bot",
+    "version": "0.0.1",
+    "description": "testing new bot",
+    "main": "src/index.js",
+    "scripts": {
+      "test": "lol"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+      "discord.js": "^14.14.1",
+      "dotenv": "^16.4.5",
+      "request": "^2.88.2"
+    }
+  }
