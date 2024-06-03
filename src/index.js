@@ -17,13 +17,15 @@ client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
 
+
+
 client.on("interactionCreate", async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
   if (interaction.commandName === "ping") {
     await interaction.reply("Pong!");
   }
-});
+}); 
 
 client.on(Events.MessageReactionAdd, async (reaction, user) => {
   const URL =
@@ -46,7 +48,6 @@ client.on(Events.MessageReactionAdd, async (reaction, user) => {
   }
 
   async function getRoster() {
-    console.log("Got here A");
     let channelId = reaction.message.channelId;
     let discordId = reaction.message.author.id;
     let username = reaction.message.author.username;
@@ -72,28 +73,39 @@ client.on(Events.MessageReactionAdd, async (reaction, user) => {
       return;
     }
 
-    if (
-      !tags.team_tag_2.includes(channelId) &&
-      !tags.team_tag_1.includes(channelId)
-    ) {
-      console.log(`Channel ${channelId} is not the correct channel`);
-      return;
-    }
+    // if (
+    //   !tags.team_tag_2.includes(channelId) &&
+    //   !tags.team_tag_1.includes(channelId)
+    // ) {
+    //   console.log(`Channel ${channelId} is not the correct channel`);
+    //   return;
+    // }
 
-    if (tags.team_tag_1.includes(channelId)) {
-      team_tag = 1;
-    }
+    // if (tags.team_tag_1.includes(channelId)) {
+    //   team_tag = 1;
+    // }
 
-    if (tags.team_tag_2.includes(channelId)) {
-      team_tag = 2;
-    }
+    // if (tags.team_tag_2.includes(channelId)) {
+    //   team_tag = 2;
+    // }
+    team_tag = 1;
 
     const API_URL = `${URL}?message_content=${encodeURIComponent(
       reaction.message.content
     )}&channel_id=${team_tag}&discord_id=${discordId}&username=${username}`;
-    const data = await fetchDataFromAPI(API_URL);
+    const jsonResponse = await fetchDataFromAPI(API_URL);
     console.log(API_URL);
-    if (data) {
+    const data = JSON.parse(jsonResponse);
+    console.log(data['uploaded_successfully']);
+
+    if (data['uploaded_successfully'] === false) {
+      console.log(data);
+      reaction.message.reactions.cache
+        .get("🤖")
+        .remove()
+        .catch((error) => console.error("Failed to remove reactions:", error));
+      reaction.message.react("❌");
+    } else {
       console.log(data);
       reaction.message.reactions.cache
         .get("🤖")
@@ -104,7 +116,6 @@ client.on(Events.MessageReactionAdd, async (reaction, user) => {
   }
 });
 
-client.login(process.env.TOKEN);
 
 async function fetchDataFromAPI(url, options = "") {
   try {
@@ -112,9 +123,22 @@ async function fetchDataFromAPI(url, options = "") {
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
-    return await response.json();
+    const data = await response.text();
+    try {
+      return JSON.parse(data);
+    } catch (error) {
+      console.error("Received data is not JSON:", data);
+      return "";
+    }
   } catch (error) {
     console.error("Error fetching data:", error);
     return null; // Or handle the error differently
   }
 }
+
+function validateTeam() {
+
+}
+
+client.login(process.env.TOKEN);
+
