@@ -17,15 +17,13 @@ client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
 
-
-
 client.on("interactionCreate", async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
   if (interaction.commandName === "ping") {
     await interaction.reply("Pong!");
   }
-}); 
+});
 
 client.on(Events.MessageReactionAdd, async (reaction, user) => {
   const URL =
@@ -96,9 +94,9 @@ client.on(Events.MessageReactionAdd, async (reaction, user) => {
     const jsonResponse = await fetchDataFromAPI(API_URL);
     console.log(API_URL);
     const data = JSON.parse(jsonResponse);
-    console.log(data['uploaded_successfully']);
+    console.log(data["uploaded_successfully"]);
 
-    if (data['uploaded_successfully'] === false) {
+    if (data["uploaded_successfully"] === false) {
       console.log(data);
       reaction.message.reactions.cache
         .get("🤖")
@@ -115,7 +113,6 @@ client.on(Events.MessageReactionAdd, async (reaction, user) => {
     }
   }
 });
-
 
 async function fetchDataFromAPI(url, options = "") {
   try {
@@ -136,9 +133,4 @@ async function fetchDataFromAPI(url, options = "") {
   }
 }
 
-function validateTeam() {
-
-}
-
 client.login(process.env.TOKEN);
-
