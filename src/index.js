@@ -131,3 +131,4 @@ async function fetchDataFromAPI(url, options = "") {
 }
 
 client.login(process.env.TOKEN);
+// Hi
