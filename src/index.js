@@ -27,7 +27,7 @@ client.on("interactionCreate", async (interaction) => {
 
 client.on(Events.MessageReactionAdd, async (reaction, user) => {
   const URL =
-    "https://script.google.com/macros/s/AKfycbxSiETNuhTl4cvnShLjvzwntdPwOSKoWPzwm1S2qbYUpYvMZ_8lCc1zwPxEw4Fy0dzckg/exec";
+  "https://script.google.com/macros/s/AKfycbw8ouMZM03aafahjfTtan-vbAkITNM5ytHhJaF9zwzzV2CY7se5KIUc3LkD6D8J9p7M/exec"
 
   console.log(reaction.partial);
   // When a reaction is received, check if the structure is partial
@@ -91,24 +91,21 @@ client.on(Events.MessageReactionAdd, async (reaction, user) => {
     const API_URL = `${URL}?message_content=${encodeURIComponent(
       reaction.message.content
     )}&channel_id=${team_tag}&discord_id=${discordId}&username=${username}`;
-    const jsonResponse = await fetchDataFromAPI(API_URL);
     console.log(API_URL);
-    const data = JSON.parse(jsonResponse);
-    console.log(data["uploaded_successfully"]);
+    const data = await fetchDataFromAPI(API_URL);
+    console.log(data);
 
     if (data["uploaded_successfully"] === false) {
-      console.log(data);
       reaction.message.reactions.cache
-        .get("🤖")
-        .remove()
-        .catch((error) => console.error("Failed to remove reactions:", error));
+        ?.get("🤖")
+        ?.remove()
+        ?.catch((error) => console.error("Failed to remove reactions:", error));
       reaction.message.react("❌");
     } else {
-      console.log(data);
       reaction.message.reactions.cache
-        .get("🤖")
-        .remove()
-        .catch((error) => console.error("Failed to remove reactions:", error));
+        ?.get("🤖")
+        ?.remove()
+        ?.catch((error) => console.error("Failed to remove reactions:", error));
       reaction.message.react("✅");
     }
   }
