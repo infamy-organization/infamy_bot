@@ -27,8 +27,7 @@ client.on("interactionCreate", async (interaction) => {
 
 client.on(Events.MessageReactionAdd, async (reaction, user) => {
   const URL =
-  "https://script.google.com/macros/s/AKfycbw8ouMZM03aafahjfTtan-vbAkITNM5ytHhJaF9zwzzV2CY7se5KIUc3LkD6D8J9p7M/exec"
-
+"https://script.google.com/macros/s/AKfycbzs74ynyphVEhTqhO5neLRy8zEKcUgKzmFFTK4gZmk6wAOHpjAp7lhRFGN0jAcGm0WVkA/exec"
   console.log(reaction.partial);
   // When a reaction is received, check if the structure is partial
   if (reaction.partial) {
