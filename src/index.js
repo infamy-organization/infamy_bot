@@ -27,7 +27,7 @@ client.on("interactionCreate", async (interaction) => {
 
 client.on(Events.MessageReactionAdd, async (reaction, user) => {
   const URL =
-"https://script.google.com/macros/s/AKfycbzs74ynyphVEhTqhO5neLRy8zEKcUgKzmFFTK4gZmk6wAOHpjAp7lhRFGN0jAcGm0WVkA/exec"
+    "https://script.google.com/macros/s/AKfycbzs74ynyphVEhTqhO5neLRy8zEKcUgKzmFFTK4gZmk6wAOHpjAp7lhRFGN0jAcGm0WVkA/exec";
   console.log(reaction.partial);
   // When a reaction is received, check if the structure is partial
   if (reaction.partial) {
@@ -47,7 +47,9 @@ client.on(Events.MessageReactionAdd, async (reaction, user) => {
   async function getRoster() {
     let channelId = reaction.message.channelId;
     let discordId = reaction.message.author.id;
-    let username = reaction.message.author.username;
+    let username = reaction.message.author.globalName
+      ? reaction.message.author.globalName
+      : reaction.message.author.username;
     let team_tag = 1;
 
     let tags = {
