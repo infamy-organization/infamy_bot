@@ -130,7 +130,7 @@ client.login(process.env.TOKEN);
 
 function sendPrivateMessage(reaction, user, message) {
   const messageUser = reaction.message.author;
-
+  message = `Message for ${messageUser.globalName}:\n\n${message}`;
   if (messageUser?.id === user?.id) {
     messageUser.send(message);
     return;
