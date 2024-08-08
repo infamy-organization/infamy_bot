@@ -1,14 +1,37 @@
 import { configDotenv } from "dotenv";
 //import dotenv
 configDotenv();
-import { REST, Routes } from "discord.js"
-
-
+import { REST, Routes, ApplicationCommandOptionType } from "discord.js";
 
 const commands = [
   {
+    name: "my_team",
+    description: "Returns a user team based on tournament_id",
+    options: [
+      {
+        name: "tournament_id",
+        description: "The tournament Id for a game",
+        type: ApplicationCommandOptionType.Integer,
+        required: true,
+      },
+    ],
+  },
+  {
     name: "ping",
-    description: "Replies with Pong!",
+    description: "Returns Pong!",
+  },
+  {
+    name: "my_placement",
+    description:
+      "Return their current placement on the leaderboard based on tournament_id",
+    options: [
+      {
+        name: "tournament_id",
+        description: "The tournament Id for a game",
+        type: ApplicationCommandOptionType.Integer,
+        required: true,
+      },
+    ],
   },
 ];
 

@@ -1,5 +1,6 @@
 import { config } from "dotenv";
 import { Client, GatewayIntentBits, Partials, Events } from "discord.js";
+import { slashCommandFunctions } from "./slashCommands.js";
 config();
 
 const client = new Client({
@@ -38,9 +39,13 @@ client.on("ready", () => {
 client.on("interactionCreate", async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
-  if (interaction.commandName === "ping") {
-    await interaction.reply("Pong!");
-  }
+  const slashCommandFunc = slashCommandFunctions?.[interaction.commandName];
+
+  if (!slashCommandFunc) return;
+
+  const message = await slashCommandFunc(interaction);
+
+  await interaction.reply(message);
 });
 
 client.on(Events.MessageReactionAdd, async (reaction, user) => {

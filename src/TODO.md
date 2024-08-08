@@ -1,0 +1,5 @@
+- [ ] Determine the game from the channel id
+- [ ] Return the DiscordUsername, Pro Player Name, Infamy Score, In/Out.
+- [ ] transform the data for discord bot.
+- [ ] Change the way the discord bot api is structured
+- [ ] Handle the multiple games issue.
