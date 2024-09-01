@@ -1,6 +1,7 @@
 import { config } from "dotenv";
 import { Client, GatewayIntentBits, Partials, Events } from "discord.js";
 import { slashCommandFunctions } from "./slashCommands.js";
+import { fetchDataFromAPI } from "./utils.js";
 config();
 
 const client = new Client({
@@ -43,9 +44,9 @@ client.on("interactionCreate", async (interaction) => {
 
   if (!slashCommandFunc) return;
 
+  await interaction.deferReply();
   const message = await slashCommandFunc(interaction);
-
-  await interaction.reply(message);
+  await interaction.editReply(message);
 });
 
 client.on(Events.MessageReactionAdd, async (reaction, user) => {
@@ -80,18 +81,29 @@ client.on(Events.MessageReactionAdd, async (reaction, user) => {
 
   async function getRoster() {
     try {
+      let team_tag = 1;
       let discordId = reaction.message.author.id;
       let content = encodeURIComponent(reaction.message.content);
       let username = reaction.message.author.globalName
         ? reaction.message.author.globalName
         : reaction.message.author.username;
-      let team_tag = 1;
+
+      const gameEndPoint = {
+        "r6 siege": "r6_create_team",
+        valorant: "valorant_create_team",
+        overwatch: "overwatch_create_team",
+      };
+
+      let messageContent = reaction.message.content;
+      messageContent = messageContent.split("\n");
+      let gameName = messageContent[0].toLowerCase().trim();
+      const func = gameEndPoint[gameName];
 
       if (tags.team_tag_2.includes(channelId)) {
         team_tag = 2;
       }
 
-      const API_URL = `${process.env.DISCORD_API}?message_content=${content}&channel_id=${team_tag}&discord_id=${discordId}&username=${username}`;
+      const API_URL = `${process.env.DISCORD_API}?message_content=${content}&channel_id=${team_tag}&discord_id=${discordId}&username=${username}&func=${func}`;
       console.log(API_URL);
 
       const data = await fetchDataFromAPI(API_URL);
@@ -111,25 +123,6 @@ client.on(Events.MessageReactionAdd, async (reaction, user) => {
     }
   }
 });
-
-async function fetchDataFromAPI(url, options = "") {
-  try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    const data = await response.text();
-    try {
-      return JSON.parse(data);
-    } catch (error) {
-      console.error("Received data is not JSON:", data);
-      return "";
-    }
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    return null; // Or handle the error differently
-  }
-}
 
 client.login(process.env.TOKEN);
 

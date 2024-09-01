@@ -1,5 +1,13 @@
-- [ ] Determine the game from the channel id
-- [ ] Return the DiscordUsername, Pro Player Name, Infamy Score, In/Out.
+- [x] Return the DiscordUsername, Pro Player Name, Infamy Score, In/Out.
+- [ ] Work on seige for get team and my teams
+- [ ] role assignments
 - [ ] transform the data for discord bot.
 - [ ] Change the way the discord bot api is structured
 - [ ] Handle the multiple games issue.
+
+- [x] !myTeam Command
+  - [x] update the getTournament Details function
+  - [x] add total infamy score
+  - [x] add placement
+  - [x] connect to api
+- [x] !GetTeam Command
