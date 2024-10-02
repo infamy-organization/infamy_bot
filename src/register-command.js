@@ -4,59 +4,81 @@ configDotenv();
 import { REST, Routes, ApplicationCommandOptionType } from "discord.js";
 
 const commands = [
+  // {
+  //   name: "my_team",
+  //   description: "Returns a user team based on tournament_id",
+  //   options: [
+  //     {
+  //       name: "tournament_id",
+  //       description: "The tournament Id for a game",
+  //       type: ApplicationCommandOptionType.Integer,
+  //       required: true,
+  //     },
+  //     {
+  //       name: "game",
+  //       description: "The game you want to check",
+  //       type: ApplicationCommandOptionType.String,
+  //       required: true,
+  //       choices: [
+  //         { name: "Valorant", value: "valorant" },
+  //         { name: "R6 siege", value: "r6 siege" },
+  //         { name: "Overwatch", value: "overwatch" },
+  //       ],
+  //     },
+  //   ],
+  // },
+  // {
+  //   name: "ping",
+  //   description: "Returns Pong!",
+  // },
+  // {
+  //   name: "get_team",
+  //   description:
+  //     "Returns a user team based on tournament_id, username, and game",
+  //   options: [
+  //     {
+  //       name: "tournament_id",
+  //       description: "The tournament Id for a game",
+  //       type: ApplicationCommandOptionType.Integer,
+  //       required: true,
+  //     },
+  //     {
+  //       name: "discord_member",
+  //       description: "The discord member you want to see",
+  //       type: ApplicationCommandOptionType.Mentionable,
+  //       required: true,
+  //     },
+  //     {
+  //       name: "game",
+  //       description: "The game you want to check",
+  //       type: ApplicationCommandOptionType.String,
+  //       required: true,
+  //       choices: [
+  //         { name: "Valorant", value: "valorant" },
+  //         { name: "R6 siege", value: "r6 siege" },
+  //         { name: "Overwatch", value: "overwatch" },
+  //       ],
+  //     },
+  //   ],
+  // },
   {
-    name: "my_team",
-    description: "Returns a user team based on tournament_id",
+    name: "assign_role",
+    description: "adds the role Infamous or The Big Shitter",
     options: [
-      {
-        name: "tournament_id",
-        description: "The tournament Id for a game",
-        type: ApplicationCommandOptionType.Integer,
-        required: true,
-      },
-      {
-        name: "game",
-        description: "The game you want to check",
-        type: ApplicationCommandOptionType.String,
-        required: true,
-        choices: [
-          { name: "Valorant", value: "valorant" },
-          { name: "R6 siege", value: "r6 siege" },
-          { name: "Overwatch", value: "overwatch" },
-        ],
-      },
-    ],
-  },
-  {
-    name: "ping",
-    description: "Returns Pong!",
-  },
-  {
-    name: "get_team",
-    description:
-      "Returns a user team based on tournament_id, username, and game",
-    options: [
-      {
-        name: "tournament_id",
-        description: "The tournament Id for a game",
-        type: ApplicationCommandOptionType.Integer,
-        required: true,
-      },
       {
         name: "discord_member",
-        description: "The discord member you want to see",
+        description: "The discord member you want to assign a role",
         type: ApplicationCommandOptionType.Mentionable,
         required: true,
       },
       {
-        name: "game",
+        name: "role",
         description: "The game you want to check",
         type: ApplicationCommandOptionType.String,
         required: true,
         choices: [
-          { name: "Valorant", value: "valorant" },
-          { name: "R6 siege", value: "r6 siege" },
-          { name: "Overwatch", value: "overwatch" },
+          { name: "Infamous", value: "infamous" },
+          { name: "The Big Shitter", value: "the_big_shitter" },
         ],
       },
     ],

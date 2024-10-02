@@ -4,6 +4,7 @@ export const slashCommandFunctions = {
   ping: ping,
   my_team: myTeam,
   get_team: getTeam,
+  assign_role: assignRole,
 };
 
 function ping(interaction) {
@@ -91,4 +92,48 @@ ${team.join("\n")}
   }
 
   return data.message;
+}
+
+async function assignRole(interaction) {
+  const { options, member } = interaction;
+  const [discord_member, role] = options._hoistedOptions;
+
+  console.log("---------------------------------");
+  console.log("---------------------------------");
+  console.log(discord_member);
+  console.log("---------------------------------");
+  console.log(member.roles.cache);
+  console.log("---------------------------------");
+
+  const fetched_member = await interaction.guild.members.fetch(
+    "1010586282075885609"
+  );
+
+  console.log("---------------------------------");
+
+  var roler = fetched_member.roles.cache.find(
+    (role) => role.name === "role name"
+  );
+
+  if (!role) return;
+  fetched_member.guild.roles.add(roler);
+  console.log(fetched_member.roles.cache);
+
+  console.log("---------------------------------");
+  console.log("---------------------------------");
+  console.log("---------------------------------");
+  return "Invalid member or role.";
+  // await reaction.fetch();
+
+  if (!discord_member || !role) {
+    return "Invalid member or role.";
+  }
+
+  try {
+    await member.roles.add(role);
+    return `${member.user.tag} has been assigned the role "${role.name}".`;
+  } catch (error) {
+    console.error(error);
+    return "I was unable to assign the role. Please check my permissions and role hierarchy.";
+  }
 }
