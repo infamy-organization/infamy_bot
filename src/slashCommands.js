@@ -5,6 +5,8 @@ export const slashCommandFunctions = {
   my_team: myTeam,
   get_team: getTeam,
   assign_role: assignRole,
+  remove_role: removeRole,
+  cleanse_lurkers: cleanseLurkers,
 };
 
 function ping(interaction) {
@@ -94,46 +96,106 @@ ${team.join("\n")}
   return data.message;
 }
 
-async function assignRole(interaction) {
-  const { options, member } = interaction;
+async function removeRole(interaction) {
+  console.log("Started Role assignment.");
+  const { options } = interaction;
   const [discord_member, role] = options._hoistedOptions;
-
-  console.log("---------------------------------");
-  console.log("---------------------------------");
-  console.log(discord_member);
-  console.log("---------------------------------");
-  console.log(member.roles.cache);
-  console.log("---------------------------------");
-
-  const fetched_member = await interaction.guild.members.fetch(
-    "1010586282075885609"
-  );
-
-  console.log("---------------------------------");
-
-  var roler = fetched_member.roles.cache.find(
-    (role) => role.name === "role name"
-  );
-
-  if (!role) return;
-  fetched_member.guild.roles.add(roler);
-  console.log(fetched_member.roles.cache);
-
-  console.log("---------------------------------");
-  console.log("---------------------------------");
-  console.log("---------------------------------");
-  return "Invalid member or role.";
-  // await reaction.fetch();
 
   if (!discord_member || !role) {
     return "Invalid member or role.";
   }
 
   try {
-    await member.roles.add(role);
-    return `${member.user.tag} has been assigned the role "${role.name}".`;
+    // Fetch the member by their ID if needed, but in most cases, the discord_member is enough
+    const fetched_member = await interaction.guild.members.fetch(
+      discord_member.value
+    );
+
+    // Check if the role exists and is valid
+    const fetched_role = interaction.guild.roles.cache.get(role.value);
+
+    if (!fetched_role) {
+      return `Role ${role.value} not found.`;
+    }
+
+    // Add the role to the member
+    await fetched_member.roles.remove(fetched_role);
+    console.log("Role successfully removed.");
+
+    return `${fetched_member.user.tag} has been removed the role "${fetched_role.name}".`;
+  } catch (error) {
+    console.error(error);
+    return "I was unable to remove the role. Please check my permissions and role hierarchy.";
+  }
+}
+
+async function assignRole(interaction) {
+  console.log("Started Role assignment.");
+  const { options } = interaction;
+  const [discord_member, role] = options._hoistedOptions;
+
+  if (!discord_member || !role) {
+    return "Invalid member or role.";
+  }
+
+  try {
+    // Fetch the member by their ID if needed, but in most cases, the discord_member is enough
+    const fetched_member = await interaction.guild.members.fetch(
+      discord_member.value
+    );
+
+    // Check if the role exists and is valid
+    const fetched_role = interaction.guild.roles.cache.get(role.value);
+
+    if (!fetched_role) {
+      return `Role ${role.value} not found.`;
+    }
+
+    // Add the role to the member
+    await fetched_member.roles.add(fetched_role);
+    console.log("Role successfully added.");
+
+    return `${fetched_member.user.tag} has been assigned the role "${fetched_role.name}".`;
   } catch (error) {
     console.error(error);
     return "I was unable to assign the role. Please check my permissions and role hierarchy.";
   }
+}
+
+async function cleanseLurkers(interaction) {
+  console.log("Started Lurkers Cleansing.");
+  const members = await interaction.guild.members.fetch();
+  const gameRoles = [
+    "1292062316514250804", // The Big Shitter
+    "1290998862500069436", // Infamous
+  ];
+  let numberOfLurkers = 0;
+
+  const lurkerRoleId = "1302950113098072064";
+
+  for (let member of members) {
+    let memberId = member[1].user.id;
+
+    // Fetch the member by their ID if needed, but in most cases, the discord_member is enough
+    const fetched_member = await interaction.guild.members.fetch(memberId);
+    const memberRoles = fetched_member.roles.cache;
+    const roleIds = memberRoles.map((role) => role.id);
+    let hasAGameRole = roleIds.some((element) => gameRoles.includes(element));
+
+    if (roleIds.includes(lurkerRoleId) && hasAGameRole) {
+      // Check if the role exists and is valid
+      const fetched_role = interaction.guild.roles.cache.get(lurkerRoleId);
+
+      if (!fetched_role) {
+        return `Role ${role.value} not found.`;
+      }
+
+      // Add the role to the member
+      await fetched_member.roles.remove(fetched_role);
+      console.log("Role successfully removed.");
+      numberOfLurkers++;
+    }
+  }
+
+  return `${numberOfLurkers} Lurker roles have been removed.`;
 }

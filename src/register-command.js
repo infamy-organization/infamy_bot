@@ -61,28 +61,54 @@ const commands = [
   //     },
   //   ],
   // },
-  {
-    name: "assign_role",
-    description: "adds the role Infamous or The Big Shitter",
-    options: [
-      {
-        name: "discord_member",
-        description: "The discord member you want to assign a role",
-        type: ApplicationCommandOptionType.Mentionable,
-        required: true,
-      },
-      {
-        name: "role",
-        description: "The game you want to check",
-        type: ApplicationCommandOptionType.String,
-        required: true,
-        choices: [
-          { name: "Infamous", value: "infamous" },
-          { name: "The Big Shitter", value: "the_big_shitter" },
-        ],
-      },
-    ],
-  },
+  // {
+  //   name: "assign_role",
+  //   description: "adds the role Infamous or The Big Shitter",
+  //   options: [
+  //     {
+  //       name: "discord_member",
+  //       description: "The discord member you want to assign a role",
+  //       type: ApplicationCommandOptionType.Mentionable,
+  //       required: true,
+  //     },
+  //     {
+  //       name: "role",
+  //       description: "The game you want to check",
+  //       type: ApplicationCommandOptionType.String,
+  //       required: true,
+  //       choices: [
+  //         { name: "Infamous", value: "1290998862500069436" },
+  //         { name: "The Big Shitter", value: "1292062316514250804" },
+  //       ],
+  //     },
+  //   ],
+  // },
+  // {
+  //   name: "remove_role",
+  //   description: "remove roles Infamous or The Big Shitter",
+  //   options: [
+  //     {
+  //       name: "discord_member",
+  //       description: "The discord member you want to remove a role",
+  //       type: ApplicationCommandOptionType.Mentionable,
+  //       required: true,
+  //     },
+  //     {
+  //       name: "role",
+  //       description: "The role you want to remove",
+  //       type: ApplicationCommandOptionType.String,
+  //       required: true,
+  //       choices: [
+  //         { name: "Infamous", value: "1290998862500069436" },
+  //         { name: "The Big Shitter", value: "1292062316514250804" },
+  //       ],
+  //     },
+  //   ],
+  // },
+  // {
+  //   name: "cleanse_lurkers",
+  //   description: "remove lurker roles.",
+  // },
 ];
 
 const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
