@@ -115,10 +115,11 @@ client.on(Events.MessageReactionAdd, async (reaction, user) => {
       } else {
         sendReaction(reaction, "✅");
         sendPrivateMessage(reaction, user, data["message"]);
+
       }
     } catch (error) {
       sendReaction(reaction, "⚠️");
-      console.error("Something went wrong when fetching the message:", error);
+      console.log("Something went wrong when fetching the message:", error);
       return;
     }
   }
@@ -126,16 +127,20 @@ client.on(Events.MessageReactionAdd, async (reaction, user) => {
 
 client.login(process.env.TOKEN);
 
-function sendPrivateMessage(reaction, user, message) {
+async function sendPrivateMessage(reaction, user, message) {
   const messageUser = reaction.message.author;
-  message = `Message for ${messageUser.globalName}:\n\n${message}`;
-  if (messageUser?.id === user?.id) {
-    messageUser.send(message);
-    return;
-  }
+  message = `Message for ${messageUser.globalName || messageUser.username}:\n\n${message}`;
 
-  messageUser.send(message);
-  user.send(message);
+  try {
+    if (messageUser?.id === user?.id) {
+      await messageUser.send(message);
+    } else {
+      await messageUser.send(message);
+      await user.send(message);
+    }
+  } catch (error) {
+    console.error(`Failed to send DM to ${messageUser.username}: ${error.message}`);
+  }
 }
 
 function sendReaction(reaction, emoji) {
