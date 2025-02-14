@@ -146,18 +146,12 @@ async function sendPrivateMessage(reaction, user, message) {
   }
 }
 
-function sendReaction(reaction, emoji) {
-  // reaction.message.reactions.cache
-  //   ?.get("🤖")
-  //   ?.remove()
-  //   ?.catch((error) => console.error("Failed to remove reactions:", error));
-
+async function sendReaction(reaction, emoji) {
   reaction.message.reactions
     .removeAll()
-    .catch((error) => console.error("Failed to clear reactions:", error));
-  try {
-    reaction.message.react(emoji);
-  } catch (error) {
-    console.error("Failed to react:", error);
-  }
+    .catch((error) => console.error("Failed to clear reactions:", error.message));
+
+  reaction.message
+    .react(emoji)
+    .catch((error) => console.error("Failed to add reactions:", error.message));
 }
