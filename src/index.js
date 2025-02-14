@@ -115,7 +115,6 @@ client.on(Events.MessageReactionAdd, async (reaction, user) => {
       } else {
         sendReaction(reaction, "✅");
         sendPrivateMessage(reaction, user, data["message"]);
-
       }
     } catch (error) {
       sendReaction(reaction, "⚠️");
@@ -129,7 +128,9 @@ client.login(process.env.TOKEN);
 
 async function sendPrivateMessage(reaction, user, message) {
   const messageUser = reaction.message.author;
-  message = `Message for ${messageUser.globalName || messageUser.username}:\n\n${message}`;
+  message = `Message for ${
+    messageUser.globalName || messageUser.username
+  }:\n\n${message}`;
 
   try {
     if (messageUser?.id === user?.id) {
@@ -139,7 +140,9 @@ async function sendPrivateMessage(reaction, user, message) {
       await user.send(message);
     }
   } catch (error) {
-    console.error(`Failed to send DM to ${messageUser.username}: ${error.message}`);
+    console.error(
+      `Failed to send DM to ${messageUser.username}: ${error.message}`
+    );
   }
 }
 
@@ -152,5 +155,9 @@ function sendReaction(reaction, emoji) {
   reaction.message.reactions
     .removeAll()
     .catch((error) => console.error("Failed to clear reactions:", error));
-  reaction.message.react(emoji);
+  try {
+    reaction.message.react(emoji);
+  } catch (error) {
+    console.error("Failed to react:", error);
+  }
 }
